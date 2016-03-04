@@ -17,5 +17,13 @@
   },
   "dependencies": {
     "mkdirp": "^0.5.1"
-  }
+  },
+  "keywords": [
+    "protractor",
+    "jasmine",
+    "screenshots",
+    "reporter",
+    "specs",
+    "tests"
+  ]
 }

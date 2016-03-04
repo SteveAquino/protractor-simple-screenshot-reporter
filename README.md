@@ -2,7 +2,7 @@
 
 A simple screenshot reporter for Protractor.
 
-## Installation
+## Usage
 
 1. Install `protractor-simple-screenshot-reporter` locally:
 
@@ -28,3 +28,7 @@ exports.config = {
   ...
 };
 ```
+
+## TODO
+
+- Support more complex file patterns (eg browser name, timestamp, ect... 
