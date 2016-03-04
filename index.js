@@ -8,7 +8,7 @@ function writeScreenShot(data, filename) {
 }
 
 function parameterizeFilename(spec) {
-  return spec.replace(/\W+/g, "-").replace(/^\W+/, '');
+  return spec.replace(/\W+/g, "-").replace(/(^-|-$)/g, '');
 }
 
 function filenameForSpec(config, spec) {

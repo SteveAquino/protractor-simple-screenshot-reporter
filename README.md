@@ -31,4 +31,4 @@ exports.config = {
 
 ## TODO
 
-- Support more complex file patterns (eg browser name, timestamp, ect... 
+- Support more complex file patterns (eg browser name, timestamp, ect...)

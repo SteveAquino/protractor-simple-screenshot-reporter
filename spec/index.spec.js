@@ -52,5 +52,11 @@ describe('ScreenshotReporter', function() {
       reporter.specDone({fullName: 'test'});
       expect(fs.existsSync('tmp/screenshots/test.png')).toEqual(true);
     });
+
+    it('escapes non-alphanumeric characters', function() {
+      var reporter = new ScreenshotReporter();
+      reporter.specDone({fullName: '/test!!'});
+      expect(fs.existsSync('tmp/screenshots/test.png')).toEqual(true);
+    });
   });
 });
