@@ -18,6 +18,17 @@ var ScreenshotReporter = require('../index.js');
 describe('ScreenshotReporter', function() {
   afterEach(function() { rimraf.sync('tmp/'); });
 
+  describe('.jasmineStarted()', function() {
+    describe('if config.resetEachRun = true', function() {
+      it('removes the screenshot directory', function() {
+        var reporter = new ScreenshotReporter({resetEachRun: true});
+        mkdirp.sync('tmp/screenshots');
+        reporter.jasmineStarted();
+        expect(fs.existsSync('tmp/screenshots')).toEqual(false);
+      });
+    });
+  });
+
   describe('.specDone()', function() {
     beforeEach(function() { mkdirp.sync('tmp/screenshots'); });
 

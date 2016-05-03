@@ -40,6 +40,16 @@ jasmine.getEnv().addReporter(new ScreenshotReporter({
 }));
 ```
 
+## Supported options
+
+```javascript
+{
+  directory: 'tmp/screenshots', // The directory to save screenshots to
+  filename: ':dir/:spec.png',   // The filename pattern for the screenshot
+  resetEachRun: false           // If true, clears the directory each run
+}
+```
+
 ## TODO
 
 - Support more complex file patterns (eg browser name, timestamp, ect...)

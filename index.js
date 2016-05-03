@@ -1,6 +1,7 @@
 var fs     = require('fs');
 var path   = require('path');
 var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
 
 function writeScreenShot(data, filename) {
   var stream = fs.createWriteStream(filename);
@@ -30,6 +31,12 @@ function ScreenshotReporter(config) {
   config.directory = config.directory || 'tmp/screenshots';
   config.filename  = config.filename  || ':dir/:spec.png';
   this.config = config;
+};
+
+ScreenshotReporter.prototype.jasmineStarted = function(suiteInfo) {
+  if(this.config.resetEachRun) {
+    rimraf.sync(this.config.directory);
+  }
 };
 
 /*
