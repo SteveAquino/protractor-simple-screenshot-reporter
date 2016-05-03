@@ -29,6 +29,17 @@ exports.config = {
 };
 ```
 
+You can also pass a function to the :filename option:
+
+```javascript
+jasmine.getEnv().addReporter(new ScreenshotReporter({
+  filename: function(spec) {
+    // Group into passed/ and failed/ directories
+    return [':dir', spec.status, ':spec.png'].join('/');
+  }
+}));
+```
+
 ## TODO
 
 - Support more complex file patterns (eg browser name, timestamp, ect...)

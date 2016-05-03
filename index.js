@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs     = require('fs');
+var path   = require('path');
 var mkdirp = require('mkdirp');
 
 function writeScreenShot(data, filename) {
@@ -8,13 +9,17 @@ function writeScreenShot(data, filename) {
 }
 
 function parameterizeFilename(spec) {
-  return spec.replace(/\W+/g, "-").replace(/(^-|-$)/g, '');
+  return spec.replace(/\W+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 function filenameForSpec(config, spec) {
-  var name = parameterizeFilename(spec);
+  var name = parameterizeFilename(spec.fullName);
+  var file = config.filename;
 
-  return config.filename
+  // Convert function to filename.
+  if(typeof file === 'function') { file = file(spec); }
+
+  return file
     .replace(':dir', config.directory)
     .replace(':spec', name)
   ;
@@ -28,19 +33,16 @@ function ScreenshotReporter(config) {
 };
 
 /*
- *  Create tmp/screenshots if it doesn't exist
- */
-ScreenshotReporter.prototype.jasmineStarted = function(suiteInfo) {
-  mkdirp.sync(this.config.directory);
-};
-
-/*
  *  Take a screenshot and write it to the a
  *  parameterized file name based on the spec.
  */
 ScreenshotReporter.prototype.specDone = function(result) {
-  var filename = filenameForSpec(this.config, result.fullName);
-  browser.takeScreenshot().then(function (png) {
+  var filename = filenameForSpec(this.config, result);
+
+  // Create any required directories for the file.
+  mkdirp.sync(path.dirname(filename));
+
+  browser.takeScreenshot().then(function(png) {
     writeScreenShot(png, filename);
   });
 };

@@ -18,28 +18,16 @@ var ScreenshotReporter = require('../index.js');
 describe('ScreenshotReporter', function() {
   afterEach(function() { rimraf.sync('tmp/'); });
 
-  describe('.jasmineStarted()', function() {
-    it('creates a screenshot directory with default options', function() {
-      var reporter = new ScreenshotReporter();
-      reporter.jasmineStarted();
-
-      expect(fs.existsSync('tmp/screenshots')).toEqual(true);
-    });
-
-    it('creates a screenshot directory with custom options', function() {
-      var reporter = new ScreenshotReporter({
-        directory: 'tmp/something/cool'
-      });
-      reporter.jasmineStarted();
-
-      expect(fs.existsSync('tmp/something/cool')).toEqual(true);
-    });
-  });
-
   describe('.specDone()', function() {
     beforeEach(function() { mkdirp.sync('tmp/screenshots'); });
 
     it('writes a file with default options', function() {
+      var reporter = new ScreenshotReporter();
+      reporter.specDone({fullName: 'test'});
+      expect(fs.existsSync('tmp/screenshots/test.png')).toEqual(true);
+    });
+
+    it('writes a file with a custom :filename pattern', function() {
       var reporter = new ScreenshotReporter({
         filename: ':dir/cool-:spec.png'
       });
@@ -47,10 +35,14 @@ describe('ScreenshotReporter', function() {
       expect(fs.existsSync('tmp/screenshots/cool-test.png')).toEqual(true);
     });
 
-    it('writes a file with default options', function() {
-      var reporter = new ScreenshotReporter();
+    it('writes a file with a custom :filename function', function() {
+      var reporter = new ScreenshotReporter({
+        filename: function(spec) {
+          return ':dir/dynamic/' + spec.fullName + '.png';
+        }
+      });
       reporter.specDone({fullName: 'test'});
-      expect(fs.existsSync('tmp/screenshots/test.png')).toEqual(true);
+      expect(fs.existsSync('tmp/screenshots/dynamic/test.png')).toEqual(true);
     });
 
     it('escapes non-alphanumeric characters', function() {
